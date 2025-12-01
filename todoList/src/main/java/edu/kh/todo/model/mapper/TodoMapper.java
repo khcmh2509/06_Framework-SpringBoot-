@@ -1,6 +1,10 @@
 package edu.kh.todo.model.mapper;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
+
+import edu.kh.todo.model.dto.Todo;
 
 /* @Mapper 
  * - Mybatis에서 제공하는 어노테이션
@@ -20,6 +24,12 @@ import org.apache.ibatis.annotations.Mapper;
 public interface TodoMapper {
 
 	String testTitle();
+
+	List<Todo> selectAll();
+
+	int getCompleteCount();
+
+	int addTodo(Todo todo);
 	
 	
 	
