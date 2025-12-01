@@ -26,7 +26,7 @@
 		ORDER BY TODO_NO
 	</select>
 
-
+	<!-- 완료된 할 일 개수 조회 -->
 	<select id="getCompleteCount" resultType="_int">
 		SELECT COUNT(*)
 		FROM TB_TODO
@@ -50,6 +50,31 @@
 		resultType 무조건 생략!
 	
 	 -->
+
+	<!--
+  	mapper.xml 에서 java data(파라미터)를 SQL에 삽입하는 방법!
+  	
+  	1) #{변수명 | 필드명} : SQL에 삽입 시 양쪽에 '' 붙여서 삽입
+ 
+   	ex) MEMBER_EMAIL = #{memberEmail}
+   						-> 'member01@naver.com'
+   				
+   =============================================================
+  
+   2) ${변수명 | 필드명} : SQL에 삽입 시 양쪽에 '' 붙이지 않고 삽입				
+  
+   ${} 언제 사용할까?
+   1) 삽입할 값이 숫자인 경우
+   2) SQL문 자체가 변해야 하는 경우
+  
+   ex) SELECT MEMBER_NAME, ${key} FROM "MEMBER"
+   -> ${key}가 ENROLL_DATE 인 경우
+   -> SELECT MEMBER_NAME, ENROLL_DATE FROM "MEMBER"
+  
+   -> ${key}가 MEMBER_ADDRESS 인 경우
+   -> SELECT MEMBER_NAME, MEMBER_ADDRESS FROM "MEMBER"
+   	
+   -->
 
 
 
