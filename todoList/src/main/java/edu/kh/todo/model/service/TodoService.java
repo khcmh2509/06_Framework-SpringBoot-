@@ -28,5 +28,11 @@ public interface TodoService {
 	 * @return todo
 	 */
 	Todo todoDetail(int todoNo);
+	
+	/** 할 일 삭제
+	 * @param todoNo
+	 * @return result
+	 */
+	int todoDelete(int todoNo);
 
 }
