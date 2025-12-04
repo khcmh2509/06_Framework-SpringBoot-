@@ -370,6 +370,35 @@ updateBtn.addEventListener("click", (e) => {
     headers : {"Content-Type": "application/json"},
     body : JSON.stringify(obj)
   })
+  .then(resp => resp.text())
+  .then(result => {
+
+    if(result > 0) {
+      alert("수정 성공!!");
+
+      // 수정 레이어 숨기기
+      updateLayer.classList.add("popup-hidden");
+
+      // 상세 조회 레이어 보이기
+      // -> 수정한 내용이 출력되도록 
+      popupTodoTitle.innerText = updateTitle.value;
+
+      popupTodoContent.innerHTML 
+        = updateContent.value.replaceAll("\n", "<br>"); 
+
+      popupLayer.classList.remove("popup-hidden");
+
+      selectTodoList();  // 전체 목록 다시 조회
+
+      updateTitle.value = "";
+      updateContent.value = "";
+      updateBtn.removeAttribute("data-todo-no"); // 속성 제거
+
+    } else {
+      alert("실패");
+    }
+
+  });
 
 });
 
