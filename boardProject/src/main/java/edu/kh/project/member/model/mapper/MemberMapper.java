@@ -19,6 +19,12 @@ public interface MemberMapper {
 	 */
 	int checkEmail(String memberEmail);
 
+	/** 닉네임 중복 검사 SQL 실행
+	 * @param memberNickname
+	 * @return
+	 */
+	int checkNickname(String memberNickname);
+
 	
 	
 	
