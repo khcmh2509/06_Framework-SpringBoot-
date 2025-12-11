@@ -1,5 +1,6 @@
 package edu.kh.project.myPage.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import edu.kh.project.member.model.dto.Member;
+import edu.kh.project.myPage.model.dto.UploadFile;
 import edu.kh.project.myPage.model.service.MyPageService;
 import lombok.extern.slf4j.Slf4j;
 
@@ -100,7 +102,16 @@ public class MyPageController {
 	
 	// 파일 목록 조회 화면 이동
 	@GetMapping("fileList") //   /myPage/fileList  GET 방식 요청 매핑
-	public String fileList() {
+	public String fileList(Model model, 
+			@SessionAttribute("loginMember") Member loginMember) {
+		
+		// 파일 목록 조회 서비스 호출(현재 로그인한 회원이 올린 이미지만)
+		int memberNo = loginMember.getMemberNo();
+		List<UploadFile> list = service.fileList(memberNo);
+		
+		// model에 list 담아서 forward
+		model.addAttribute("list", list);
+		
 		return "myPage/myPage-fileList";
 	}
 	
@@ -274,6 +285,39 @@ public class MyPageController {
 		
 		return "redirect:/myPage/fileTest";
 	}
+	
+	@PostMapping("file/test2")  // /myPage/file/test2 POST 요청 매핑
+	public String fileUpload2(@RequestParam("uploadFile") MultipartFile uploadFile, 
+							@SessionAttribute("loginMember") Member loginMember,
+							RedirectAttributes ra) {
+		
+		try {
+			
+			// 로그인한 회원의 번호 얻어오기 (누가 업로드 했는가)
+			int memberNo = loginMember.getMemberNo();
+			
+			// 업로드된 파일 정보를 DB에 INSERT 후 결과 행의 갯수 반환 받아옴
+			int result = service.fileUpload2(uploadFile, memberNo);
+			
+			String message = null;
+			
+			if(result > 0) {
+				message = "파일 업로드 성공";
+				
+			} else {
+				message = "파일 업로드 실패..";
+			}
+			
+			ra.addFlashAttribute("message", message);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.info("파일 업로드 테스트2 중 예외발생");
+		}
+		
+		return "redirect:/myPage/fileTest";
+	}
+	
 	
 	
 	
