@@ -63,8 +63,9 @@ public class BoardController {
 			
 		}
 		
-		
-		
+		// model에 결과 값 등록
+		model.addAttribute("pagination", map.get("pagination"));
+		model.addAttribute("boardList", map.get("boardList"));
 		
 		// src/main/resources/templates/board/boardList.html 로 forward
 		return "board/boardList";
