@@ -132,7 +132,23 @@ public class BoardController {
 				
 				BoardImg thumbnail = null;
 				
+				// imageList의 0번 인덱스 == IMG_ORDER가 가장 빠른 순서
 				
+				// 만약 이미지 목록의 0번째 요소의 IMG_ORDER 가 0이면 == 썸네일
+				if(board.getImageList().get(0).getImgOrder() == 0) {
+					thumbnail = board.getImageList().get(0);
+				}
+				
+				// thumbnail 변수에는
+				// - 이미지 목록의 0번째 요소가 썸네일이면 썸네일 이미지의 BoardImg객체
+				// - 썸네일이 아니라면 null
+				model.addAttribute("thumbnail", thumbnail);
+				
+				// start라는 key에 thumbnail이 null이 아닐 때 1 저장, null이면 0 저장
+				model.addAttribute("start", thumbnail != null ? 1 : 0);
+				// 썸네일 있을 때 : start=1
+				// 썸네일 없을 때(일반이미지만 있거나, 등록된 이미지가 아예 없을때)
+				// : start=0
 				
 			}
 			
