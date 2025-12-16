@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import edu.kh.project.board.model.dto.Board;
+import edu.kh.project.board.model.dto.BoardImg;
 import edu.kh.project.board.model.service.BoardService;
 import edu.kh.project.member.model.dto.Member;
 import lombok.extern.slf4j.Slf4j;
@@ -109,8 +110,35 @@ public class BoardController {
 		// 2) 서비스 호출
 		Board board = service.selectOne(map);
 		
+		//log.debug("조회된 board : " + board);
 		
-		return "";
+		String path = null;
+		
+		// 조회 결과가 없는 경우
+		if(board == null) {
+			path = "redirect:/board/" + boardCode; 
+			// 내가 현재 보고있는 게시판목록으로 재요청
+			ra.addFlashAttribute("message", "게시글이 존재하지 않습니다");
+			
+		} else { // 조회 결과가 있는 경우
+			path = "board/boardDetail"; 
+			// src/main/resources/templates/board/boardDetail.html로 forward
+			
+			// board - 게시글 일반 내용 + imageList + commentList
+			model.addAttribute("board", board);
+			
+			// 조회된 이미지 목록(imageList)이 있을 경우
+			if( !board.getImageList().isEmpty() ) {
+				
+				BoardImg thumbnail = null;
+				
+				
+				
+			}
+			
+		}
+		
+		return path;
 	}
 	
 	
