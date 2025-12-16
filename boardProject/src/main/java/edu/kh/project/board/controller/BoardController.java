@@ -1,5 +1,6 @@
 package edu.kh.project.board.controller;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +10,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import edu.kh.project.board.model.service.BoardService;
+import edu.kh.project.member.model.dto.Member;
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
@@ -78,6 +81,40 @@ public class BoardController {
 		// src/main/resources/templates/board/boardList.html 로 forward
 		return "board/boardList";
 	}
+	
+	// 상세 조회 요청 주소
+	// /board/1/2000
+	// /board/2/1960
+	@GetMapping("{boardCode:[0-9]+}/{boardNo:[0-9]+}")
+	public String boardDetail(@PathVariable("boardCode") int boardCode,
+						@PathVariable("boardNo") int boardNo,
+						@SessionAttribute(value = "loginMember", required = false) Member loginMember
+							
+			) {
+		
+		// 게시글 상세 조회 서비스 호출
+		// 1) Map으로 전달할 파라미터 묶기
+		Map<String, Integer> map = new HashMap<>();
+		map.put("boardCode", boardCode);
+		map.put("boardNo", boardNo);
+		
+		
+		
+		
+		
+		return "";
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	

@@ -78,11 +78,25 @@ public class BoardServiceImpl implements BoardService{
 		// 	  삭제되지 않은 게시글 수를 조회
 		int listCount = mapper.getSearchCount(paramMap);
 		
+		// 2. 1번의 결과 + cp 를 이용해서
+		// Pagination 객체 생성
+		Pagination pagination = new Pagination(cp, listCount);
 		
+		// 3. 특정 게시판의 지정된 페이지 목록 조회 (검색 포함)
+		int limit = pagination.getLimit(); // 10개
+		int offset = (cp - 1) * limit;
+		RowBounds rowBounds = new RowBounds(offset, limit);
 		
+		List<Board> boardList = mapper.selectSearchList(paramMap, rowBounds);
 		
+		// 4. 검색 목록 조회 결과 + Pagination 객체를 Map으로 묶음
+		Map<String, Object> map = new HashMap<>();
+		map.put("pagination", pagination);
+		map.put("boardList", boardList);
 		
-		
-		return null;
+		// 5. 결과반환
+		return map;
 	}
+	
+	
 }
