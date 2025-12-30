@@ -88,7 +88,7 @@ targetInput.addEventListener("input", e => {
 });
 
 
-// 채팅방 입장 또는 선택 함수
+// 새로운 채팅방 입장 또는 기존 채팅방 선택 함수
 function chattingEnter(e){
 
 	console.log(e.target); // 실제 클릭된 요소
@@ -455,9 +455,6 @@ chattingSock.onmessage = function(e) {
 
 	selectRoomList();
 }
-
-
-
 
 // 문서 로딩 완료 후 수행할 기능
 document.addEventListener("DOMContentLoaded", ()=>{

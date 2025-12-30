@@ -6,6 +6,7 @@ import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
 import org.springframework.web.socket.server.HandshakeInterceptor;
 
+import edu.kh.project.websocket.handler.ChattingWebsocketHandler;
 import edu.kh.project.websocket.handler.TestWebsocketHandler;
 import lombok.RequiredArgsConstructor;
 
@@ -22,6 +23,8 @@ public class WebSocketConfig implements WebSocketConfigurer {
 	// 3. 부가 기능 설정
 	
 	private final TestWebsocketHandler testWebsocketHandler;
+	
+	private final ChattingWebsocketHandler chattingWebsocketHandler;
 	
 	// Bean으로 등록된 SessionHandshakeInterceptor 주입됨
 	private final HandshakeInterceptor handshakeInterceptor;
@@ -42,6 +45,16 @@ public class WebSocketConfig implements WebSocketConfigurer {
 								"http://192.168.32.100/")
 		// 웹소켓 요청이 허용되는 ip/도메인 지정
 		.withSockJS(); // SockJS 지원
+		
+		// ---------------------------------------
+		
+		registry
+		.addHandler(chattingWebsocketHandler, "/chattingSock")
+		.addInterceptors(handshakeInterceptor)
+		.setAllowedOriginPatterns("http://localhost/", 
+								"http://127.0.0.1/", 
+								"http://192.168.32.100/")
+		.withSockJS();
 		
 		
 	}

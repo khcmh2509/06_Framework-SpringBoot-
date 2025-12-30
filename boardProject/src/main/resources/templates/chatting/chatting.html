@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	
-    <title>채팅방</title>
 
-    <th:block th:replace="~{common/common}"></th:block>
-    <link rel="stylesheet" href="/css/chatting/chatting-style.css">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<title>채팅방</title>
+
+	<th:block th:replace="~{common/common}"></th:block>
+	<link rel="stylesheet" href="/css/chatting/chatting-style.css">
 </head>
 
 <body>
@@ -18,7 +19,7 @@
 
 		<button id="addTarget">추가</button>
 
-		<div id="addTargetPopupLayer" class="popup-layer-close">  
+		<div id="addTargetPopupLayer" class="popup-layer-close">
 			<span id="closeBtn">&times</span>
 
 			<div class="target-input-area">
@@ -27,7 +28,7 @@
 
 			<ul id="resultArea"></ul>
 		</div>
-	
+
 		<div class="chatting-area">
 			<ul class="chatting-list">
 				<th:block th:each="room : ${roomList}">
@@ -38,7 +39,7 @@
 							<img th:if="${room.targetProfile}" class="list-profile" th:src="${room.targetProfile}">
 
 							<img th:unless="${room.targetProfile}" class="list-profile" src="/images/user.png">
-							
+
 						</div>
 						<div class="item-body">
 							<p>
@@ -58,12 +59,12 @@
 			</ul>
 
 			<div class="prev-message">
-				<h1>채팅방을 선택해주세요</h1>	
+				<h1>채팅방을 선택해주세요</h1>
 			</div>
-			
+
 			<div class="chatting-content display-none">
-				<ul class="display-chatting"></ul>	
-			
+				<ul class="display-chatting"></ul>
+
 				<div class="input-area">
 					<textarea id="inputChatting" rows="3"></textarea>
 
@@ -81,14 +82,15 @@
         <img id="modalImage">
     </div>
 	-->
-	
 
-    <script th:inline="javascript">
+
+	<script th:inline="javascript">
 		// 로그인한 회원 번호
 		const loginMemberNo = /*[[${session.loginMember?.memberNo}]]*/ "로그인 회원 번호";
 
 	</script>
 
-    <script src="/js/chatting/chatting.js"></script>
+	<script src="/js/chatting/chatting.js"></script>
 </body>
+
 </html>
