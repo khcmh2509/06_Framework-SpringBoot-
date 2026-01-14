@@ -1,5 +1,7 @@
 package edu.kh.project.admin.model.service;
 
+import java.util.List;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,13 +54,21 @@ public class AdminServiceImpl implements AdminService{
 		member.setMemberPw(encPw);
 		
 		// 4. DB 에 암호화된 비밀번호가 세팅된 member를 전달하여 계정 발급
+		int result = mapper.createAdminAccount(member);
 		
+		// 5. 계정 발급이 정상처리 되었으면, 발급된(평문) 리턴
+		if(result > 0) {
+			return rawPw;
+		} else {
+			return null;			
+		}
 		
-		
-		return null;
 	}
 	
-	
+	@Override
+	public List<Member> adminAccountList() {
+		return mapper.adminAccountList();
+	}
 	
 	
 	

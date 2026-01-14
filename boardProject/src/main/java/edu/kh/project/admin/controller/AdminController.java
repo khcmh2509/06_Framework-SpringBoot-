@@ -1,5 +1,7 @@
 package edu.kh.project.admin.controller;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
@@ -85,7 +87,20 @@ public class AdminController {
 		}
 	}
 	
-	
+	/** 관리자 계정 목록 조회
+	 * @return
+	 */
+	@GetMapping("adminAccountList")
+	public ResponseEntity<Object> adminAccountList() {
+		try {
+			List<Member> adminList = service.adminAccountList();
+			return ResponseEntity.status(HttpStatus.OK).body(adminList);
+			
+		}catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(null);
+		}
+	}
 	
 	
 	
