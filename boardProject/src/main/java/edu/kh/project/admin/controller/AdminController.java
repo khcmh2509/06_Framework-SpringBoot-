@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import edu.kh.project.admin.model.service.AdminService;
+import edu.kh.project.board.model.dto.Board;
 import edu.kh.project.member.model.dto.Member;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -101,6 +102,24 @@ public class AdminController {
 					.body(null);
 		}
 	}
+	
+	
+	/** 최대 조회수 게시글 조회
+	 * @return
+	 */
+	@GetMapping("maxReadCount")
+	public ResponseEntity<Object> maxReadCount() {
+		try {
+			Board board = service.maxReadCount();
+			return ResponseEntity.status(HttpStatus.OK).body(board);
+			
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(null);
+		}
+	}
+	
+	
 	
 	
 	
