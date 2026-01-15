@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -119,7 +120,42 @@ public class AdminController {
 		}
 	}
 	
+	/** 탈퇴 회원 리스트 조회
+	 * @return
+	 */
+	@GetMapping("withdrawnMemberList")
+	public ResponseEntity<Object> selectWithdrawnMemberList() {
+		// 성공 시 List<Member> 반환, 에러 발생했을 때 String -> Object
+		try {
+			List<Member> withdrawnMemberList = service.selectWithdrawnMemberList();
+			return ResponseEntity.status(HttpStatus.OK).body(withdrawnMemberList);
+			
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body("탈퇴한 회원 목록 조회 중 문제 발생 : " + e.getMessage());
+		}
+	}
 	
+	
+	@PutMapping("restoreMember")
+	public ResponseEntity<String> restoreMember(@RequestBody Member member) {
+		try {
+			int result = service.restoreMember(member.getMemberNo());
+			
+			if(result > 0) {
+				return ResponseEntity.status(HttpStatus.OK)
+						.body(member.getMemberNo() + "번 회원 복구 완료");
+			} else {
+				// BAD_REQUEST : 400 (잘못된 요청 - 요청 구문이 잘못되었거나 유효하지 않음)
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+						.body("유효하지 않은 memberNo : " + member.getMemberNo());
+			}
+			
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body("탈퇴 회원 복구 중 문제 발생 : " + e.getMessage());
+		}
+	}
 	
 	
 	

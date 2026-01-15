@@ -17,4 +17,8 @@ public interface AdminService {
 
 	Board maxReadCount();
 
+	List<Member> selectWithdrawnMemberList();
+
+	int restoreMember(int memberNo);
+
 }

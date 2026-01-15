@@ -20,4 +20,8 @@ public interface AdminMapper {
 
 	Board maxReadCount();
 
+	List<Member> selectWithdrawnMemberList();
+
+	int restoreMember(int memberNo);
+
 }

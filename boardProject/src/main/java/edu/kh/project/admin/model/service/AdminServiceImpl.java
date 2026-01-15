@@ -76,9 +76,15 @@ public class AdminServiceImpl implements AdminService{
 		return mapper.maxReadCount();
 	}
 	
+	@Override
+	public List<Member> selectWithdrawnMemberList() {
+		return mapper.selectWithdrawnMemberList();
+	}
 	
-	
-	
+	@Override
+	public int restoreMember(int memberNo) {
+		return mapper.restoreMember(memberNo);
+	}
 	
 	
 }
