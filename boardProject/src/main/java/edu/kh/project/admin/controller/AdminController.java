@@ -29,6 +29,11 @@ public class AdminController {
 	
 	private final AdminService service;
 	
+	/** 관리자 로그인
+	 * @param inputMember
+	 * @param model
+	 * @return
+	 */
 	@PostMapping("login")
 	public Member login(@RequestBody Member inputMember, Model model) {
 		
@@ -41,6 +46,10 @@ public class AdminController {
 		
 	}
 	
+	/** 관리자 로그아웃
+	 * @param session
+	 * @return
+	 */
 	@GetMapping("logout")
 	public ResponseEntity<String> logout(HttpSession session) {
 		// ResponseEntity 
@@ -104,6 +113,26 @@ public class AdminController {
 		}
 	}
 	
+
+	// ---------------통계------------------------
+	
+	/**
+	 * 7일 내 새로운 가입 회원 조회
+	 * 
+	 * @return
+	 */
+	@GetMapping("newMember")
+	public ResponseEntity<List<Member>> getNewMember() {
+		try {
+
+			List<Member> newMemberList = service.getNewMember();
+			return ResponseEntity.status(HttpStatus.OK).body(newMemberList);
+
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+		}
+	}
+
 	
 	/** 최대 조회수 게시글 조회
 	 * @return
@@ -119,6 +148,40 @@ public class AdminController {
 					.body(null);
 		}
 	}
+	
+	/**
+	 * 최대 좋아요 게시글 조회
+	 * 
+	 * @return
+	 */
+	@GetMapping("maxLikeCount")
+	public ResponseEntity<Object> maxLikeCount() {
+		try {
+			Board board = service.maxLikeCount();
+			return ResponseEntity.status(HttpStatus.OK).body(board);
+
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+		}
+	}
+
+	/**
+	 * 최대 댓글수 게시글 조회
+	 * 
+	 * @return
+	 */
+	@GetMapping("maxCommentCount")
+	public ResponseEntity<Object> maxCommentCount() {
+		try {
+			Board board = service.maxCommentCount();
+			return ResponseEntity.status(HttpStatus.OK).body(board);
+
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+		}
+	}
+
+	
 	
 	/** 탈퇴 회원 리스트 조회
 	 * @return
@@ -137,6 +200,10 @@ public class AdminController {
 	}
 	
 	
+	/** 탈퇴 회원 복구
+	 * @param member
+	 * @return
+	 */
 	@PutMapping("restoreMember")
 	public ResponseEntity<String> restoreMember(@RequestBody Member member) {
 		try {
@@ -157,7 +224,48 @@ public class AdminController {
 		}
 	}
 	
+
+	/** 삭제된 게시글 리스트 조회
+	 * @return
+	 */
+	@GetMapping("deleteBoardList")
+	public ResponseEntity<Object> selectDeleteBoardList() {
+		// 성공 시 List<Board> 반환, 실패 시 String 반환 -> Object 사용
+		try {
+			List<Board> deleteBoardList = service.selectDeleteBoardList();
+			return ResponseEntity.status(HttpStatus.OK).body(deleteBoardList);
+			
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body("삭제된 게시글 목록 조회 중 문제 발생 : " + e.getMessage());
+		}
+	}
 	
+	/** 삭제된 게시글 복구
+	 * @param member
+	 * @return
+	 */
+	@PutMapping("restoreBoard")
+	public ResponseEntity<String> restoreBoard(@RequestBody Board board) {
+		try {
+			
+			int result = service.restoreBoard(board.getBoardNo());
+			
+			if(result > 0) {
+				return ResponseEntity.status(HttpStatus.OK)
+						.body(board.getBoardNo() + "번 게시글 복구 완료");
+				
+			} else {
+				// BAD_REQUEST : 400 -> 요청구문이 잘못되었거나 유효하지 않음.
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+						.body("유효하지 않은 boardNo : " + board.getBoardNo());
+			}
+			
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body("삭제된 게시글 복구 중 문제발생 : " + e.getMessage());
+		}
+	}
 	
 	
 	
